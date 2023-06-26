@@ -1,0 +1,34 @@
+general {
+  colors = true
+  color_good = "#a3be8c"
+  color_bad  = "#bf616a"
+  color_degraded = "#ebcb8b"
+  interval = 1
+  separator = "  ⁞  "
+}
+
+order += "disk /"
+order += "cpu_usage"
+order += "wireless wlo1"
+order += "cpu_temperature 0"
+
+disk "/" {
+  format = "/: %percentage_used"
+}
+
+cpu_usage {
+  format = "CPU 0: %cpu0 1: %cpu1 2: %cpu2 3: %cpu3 4: %cpu4 5: %cpu5 6: %cpu6 7: %cpu7 8: %cpu8 9: %cpu9 10: %cpu10 11: %cpu11 12: %cpu12 13: %cpu13 14: %cpu14 15: %cpu15 "
+  degraded_threshold = 90
+  max_threshold = 95
+}
+
+wireless wlo1 {
+  format_up = "wlo1: %ip"
+  format_down  = ""
+}
+
+cpu_temperature 0 {
+	format = "CPU: %degrees°C"
+    max_threshold = 70
+    format_above_threshold = "CPU: %degrees°C"
+}
