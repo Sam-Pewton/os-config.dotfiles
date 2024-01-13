@@ -12,16 +12,16 @@ set $term alacritty
 set $refresh_i3status killall -SIGUSR1 i3status
 
 # Define names for default workspaces 
-set $web "1 "
-set $dev "2 "
-set $media "3 "
-set $ws4 "4 "
-set $ws5 "5 "
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+# set $web "1 "
+# set $dev "2 "
+# set $media "3 "
+# set $ws4 "4 "
+# set $ws5 "5 "
+# set $ws6 "6"
+# set $ws7 "7"
+# set $ws8 "8"
+# set $ws9 "9"
+# set $ws10 "10"
 
 
 ################ Include files
@@ -31,8 +31,8 @@ set $ws10 "10"
 
 
 ################ Executions
-# Set the correct keyboard mapping
-exec_always setxkbmap -layout gb
+# Set the keyboard mapping
+exec_always "setxkbmap -option 'grp:alt_shift_toggle -layout us,gb"
 
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
@@ -199,18 +199,18 @@ tiling_drag modifier titlebar
 ################ i3-bar
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-# bar {
-#         status_command i3status
-#         output primary 
-#         output DP-0
-#         separator_symbol " ⁞ "
-#         font pango:DejaVu Sans Mono 10
-#         # strip_workspace_numbers yes
-# }
 bar {
-    font pango:DejaVu Sans Mono 9
-    status_command /usr/share/bumblebee-status/bumblebee-status \
-    -m spacer spotify spacer cpu2 spacer nvidiagpu spacer memory spacer disk spacer datetime spacer \
-    -p cpu2.layout="cpu2.cpuload cpu2.coresload"  memory.interval=5s spacer.text=" ⁞ " \
-    -t iceberg
+        status_command i3status
+        output primary 
+        output DP-0
+        separator_symbol " ⁞ "
+        font pango:DejaVu Sans Mono 10
+        # strip_workspace_numbers yes
 }
+# bar {
+#     font pango:DejaVu Sans Mono 9
+#     status_command /usr/share/bumblebee-status/bumblebee-status \
+#     -m spacer spotify spacer cpu2 spacer nvidiagpu spacer memory spacer disk spacer datetime spacer \
+#     -p cpu2.layout="cpu2.cpuload cpu2.coresload"  memory.interval=5s spacer.text=" ⁞ " \
+#     -t iceberg
+# }
