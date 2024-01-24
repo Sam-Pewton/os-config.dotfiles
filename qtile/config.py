@@ -23,7 +23,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-from libqtile import bar, layout, widget, extension
+from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
@@ -102,24 +102,29 @@ for i in groups:
                 lazy.window.togroup(i.name, switch_group=False),
                 desc="Switch to & move focused window to group {}".format(i.name),
             ),
-            # Or, use below if you prefer not to switch to that group.
-            # # mod1 + shift + letter of group = move focused window to group
-            # Key([mod, "shift"], i.name, lazy.window.togroup(i.name),
-            #     desc="move focused window to group {}".format(i.name)),
         ]
     )
 
 layouts = [
     layout.Columns(
-        border_focus_stack=["#d75f5f", "#8f3d3d"],
-        border_width=4, margin=MARGIN
+        border_width=2,
+        margin=MARGIN,
+        border_focus=["#36abcc", "#36abcc"],
     ),
-    layout.Max(margin=MARGIN),
+    layout.Max(
+        border_width=2,
+        margin=MARGIN,
+        border_focus=["#36abcc", "#36abcc"],
+    ),
     # Try more layouts by unleashing below layouts.
     # layout.Stack(num_stacks=2),
     # layout.Bsp(),
     # layout.Matrix(),
-    layout.MonadTall(margin=MARGIN),
+    layout.MonadTall(
+        border_width=2,
+        margin=MARGIN,
+        border_focus=["#36abcc", "#36abcc"],
+    ),
     # layout.MonadWide(),
     # layout.RatioTile(),
     # layout.Tile(),
@@ -154,19 +159,13 @@ screens = [
                 widget.TextBox("Press &lt;M-r&gt; to spawn", foreground="#d75f5f"),
                 # NB Systray is incompatible with Wayland, consider using StatusNotifier instead
                 # widget.StatusNotifier(),
-                # widget.Systray(),
+                widget.Systray(),
                 widget.Clock(format="%a %d-%m-%Y %I:%M %p"),
                 # widget.QuickExit(),
                 widget.CurrentLayoutIcon(),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
         wallpaper="~/Pictures/Backgrounds/arch-linux-logo-binary-code-minimal-technology-21769-3440x1440.png",
         wallpaper_mode="fill"
     ),
@@ -196,17 +195,22 @@ screens = [
                 widget.QuickExit(),
             ],
             24,
-            # border_width=[2, 0, 2, 0],  # Draw top and bottom borders
-            # border_color=["ff00ff", "000000", "ff00ff", "000000"]  # Borders are magenta
         ),
-        # You can uncomment this variable if you see that on X11 floating resize/moving is laggy
-        # By default we handle these events delayed to already improve performance, however your system might still be struggling
-        # This variable is set to None (no cap) by default, but you can set it to 60 to indicate that you limit it to 60 events per second
-        # x11_drag_polling_rate = 60,
         wallpaper="~/Pictures/Backgrounds/arch-linux-logo-binary-code-minimal-technology-21769-3440x1440.png",
         wallpaper_mode="fill"
     ),
 ]
+
+
+dgroups_key_binder = None
+dgroups_app_rules = []  # type: list
+bring_front_click = False
+floats_kept_above = True
+auto_fullscreen = False
+cursor_warp = False
+focus_on_window_activation = "smart"
+follow_mouse_focus = True
+reconfigure_screens = False
 
 # Drag floating layouts.
 mouse = [
@@ -215,12 +219,6 @@ mouse = [
     Click([mod], "Button2", lazy.window.bring_to_front()),
 ]
 
-dgroups_key_binder = None
-dgroups_app_rules = []  # type: list
-follow_mouse_focus = False
-bring_front_click = False
-floats_kept_above = True
-cursor_warp = False
 floating_layout = layout.Floating(
     float_rules=[
         # Run the utility of `xprop` to see the wm class and name of an X client.
@@ -233,9 +231,6 @@ floating_layout = layout.Floating(
         Match(title="pinentry"),  # GPG key password entry
     ]
 )
-auto_fullscreen = False
-focus_on_window_activation = "smart"
-reconfigure_screens = False
 
 # If things like steam games want to auto-minimize themselves when losing
 # focus, should we respect this or not?
@@ -243,13 +238,4 @@ auto_minimize = True
 
 # When using the Wayland backend, this can be used to configure input devices.
 wl_input_rules = None
-
-# XXX: Gasp! We're lying here. In fact, nobody really uses or cares about this
-# string besides java UI toolkits; you can see several discussions on the
-# mailing lists, GitHub issues, and other WM documentation that suggest setting
-# this string if your java app doesn't work correctly. We may as well just lie
-# and say that we're a working one by default.
-#
-# We choose LG3D to maximize irony: it is a 3D non-reparenting WM written in
-# java that happens to be on java's whitelist.
 wmname = "LG3D"
