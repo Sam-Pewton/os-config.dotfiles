@@ -22,7 +22,11 @@
   (setq column-number-mode t)
   (display-line-numbers-mode 1)
   (global-display-line-numbers-mode 1)
-  (setq display-line-numbers-type 'relative))
+  (setq display-line-numbers-type 'relative)
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup")))
+  (setq vc-make-backup-files nil)
+  (setq delete-old-versions t)
+  (setq lock-file-name-transforms '(("\\`/.*/\\([^/]+\\)\\'" "/var/tmp/\\1" t))))
 
 ;; Set the default `look and feel` of emacs.
 (defun set-theme()
@@ -49,7 +53,11 @@
 ;;(mapcar 'add-package-archive list-of-package-archives)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
 (package-initialize)
+
+(when (not package-archive-contents)
+  (package-refresh-contents))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -69,6 +77,30 @@
   :ensure t
   :config
   (which-key-mode))
+
+;; for python
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable)
+  (setq python-shell-interpreter "jupyter"
+	python-shell-interpreter-args "console --simple-prompt"
+	python-shell-prompt-detect-failure-warning nil)
+  (add-to-list 'python-shell-completion-native-disabled-interpreters
+	       "jupyter"))
+
+;; requires 'autopep8' python package
+(use-package py-autopep8
+  :ensure t
+;;  (setq py-autopep8-options '("--max-line-length=100" "--aggressive"))
+  :hook ((python-mode) . py-autopep8-mode))
+
+(use-package conda
+  :ensure t
+  :init
+  (setq conda-anaconda-home (expand-file-name "~/miniforge3"))
+  (setq conda-env-home-directory (expand-file-name "~/miniforge3"))
+  (setq-default mode-line-format (cons mode-line-format '("(Conda: " :exec conda-env-current-name ")"))))
 
 ;; for a better json mode
 (use-package json-mode
@@ -172,3 +204,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+;;;; Org mode testing
+(use-package org
+  :ensure t
+  :pin gnu)
+
+(setq org-agenda-files '("~/org"))
+(setq org-log-done 'time)
+(setq org-return-follow-links t)
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(add-hook 'org-mode-hook 'org-indent-mode)
