@@ -215,4 +215,5 @@
 (setq org-log-done 'time)
 (setq org-return-follow-links t)
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+(add-to-list 'auto-mode-alist '("\.cu$" . c++-mode))
 (add-hook 'org-mode-hook 'org-indent-mode)
