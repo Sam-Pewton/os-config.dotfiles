@@ -1,0 +1,7 @@
+-- Show the undo tree
+return {
+    "mbbill/undotree",
+    config = function()
+        vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle, { desc = "[U]ndo tree" })
+    end,
+}
